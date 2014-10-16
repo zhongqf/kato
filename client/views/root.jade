@@ -1,12 +1,32 @@
 template(name="root")
-  h1(ng-bind="config.applicationName")
+  div.container
+    .row
+      .col-md-3(ng-controller="rootGroupController")
+        h1 Groups
+        div(ng-include="'groupList'")
 
-  div(ng-controller="rootController")
-    h4 Items
-    ul
-      li(ng-repeat="item in items")
-        span(ng-bind='item.title')
+      .col-md-9(ng-controller="groupController")
+        h1(ng-bind="group.name")
+
+        div(ng-repeat="project in projects", ng-controller="projectController")
+          h4(ng-bind="project.name")
+
+          table.table.table-bordered
+            tr
+              td(ng-repeat="info in monthInfos")
+                strong(ng-bind="info.title")
+            tr
+              td(ng-repeat="info in monthInfos")
+                span(ng-bind="info.workforce")
+            tr
+              td(ng-repeat="info in monthInfos")
+                span(ng-bind-html="info.peopleNames | as_trusted")
 
 
 
+template(name="groupList")
+  ul
+    li(ng-repeat="group in childGroups", ng-controller="childGroupController")
+      a(href="", ng-bind="group.name", ng-click="switchGroup(group)")
+      div(ng-include="'groupList'", ng-if="childGroups")
 

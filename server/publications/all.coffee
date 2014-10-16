@@ -5,6 +5,8 @@ Meteor.publish "users", ->
       emails: 1
       profile: 1
 
-Meteor.publish "items", ->
-  #todo: publish items with condition
-  return Items.find()
+Meteor.publish "people", -> People.find()
+Meteor.publish "groups", -> Groups.find()
+Meteor.publish "projects", -> Projects.find()
+Meteor.publish "workinfos", -> Workinfos.find()
+

@@ -13,7 +13,7 @@ one =
 
 
   person: ->
-    _.sample(Meteor.users.find().fetch())
+    _.sample(People.find().fetch())
 
   title: ->
     chance.sentence({words: _.random(3,6)}).slice(0,-1) #remove last dot
@@ -21,18 +21,27 @@ one =
   name: ->
     chance.sentence({words: _.random(2,4)}).slice(0,-1) #remove last dot
 
-  sentence: ->
-    chance.sentence({words: _.random(2,20)})
-
-  paragraph: ->
-    chance.paragraph({sentences: _.random(2,6)})
-
 
 some =
   people: (min=5, max=10)->
-    allIds = _.map(Meteor.users.find().fetch(), (obj)->obj._id)
+    allIds = _.map(People.find().fetch(), (obj)->obj._id)
     _.sample(allIds, _.random(min,max))
 
+
+
+generateUsers = ->
+  console.log "  Generating a users ..."
+
+  name = chance.name()
+  username = name.split(/[ -]/).join("_").toLowerCase()
+  email = username + "@" + chance.domain()
+
+  Accounts.createUser
+    email: email
+    username: username
+    password: "123456"
+    profile:
+      name: name
 
 generateGroups = ->
 
@@ -56,22 +65,16 @@ generateGroups = ->
     @groupIds = _.clone(currentLevelGroupIds)
 
 
-generateUsers = ->
+generatePeople = ->
 
-  console.log "  Generating users ..."
+  console.log "  Generating people ..."
 
   _(500).times (index)->
-    name = chance.name()
-    username = name.split(/[ -]/).join("_").toLowerCase()
-    email = username + "@" + chance.domain()
+    name = chance.name() + " (#{index})"
 
-    Accounts.createUser
-      email: email
-      username: username
-      password: "123456"
-      profile:
-        name: name
-        groupId: _.sample(@groupIds)
+    People.insert
+      name: "U-#{index}"
+      groupId: _.sample(@groupIds)
 
 
 
@@ -98,13 +101,10 @@ generateWorkinfos = ->
 
   _.each projects, (project)->
 
-    members = some.people(4, 50)
+    members = some.people(4, 20)
 
-    fullwork = _.random(members.length / 4, members.length / 2)
-    halfwork = _.random(1, members.length / 8)
-    nogori = members.length - fullwork - halfwork
-
-
+    fullwork = _.random(Math.round(members.length / 4), Math.round(members.length / 2))
+    halfwork = _.random(0, Math.round(members.length / 8))
 
     projectDays = moment.duration(project.endAt - project.startAt).asDays()
 
@@ -122,7 +122,7 @@ generateWorkinfos = ->
         startAt: moment(project.startAt).add(_.random(1, projectDays/2), 'd').valueOf()
         endAt: moment(project.endAt).subtract(_.random(1, projectDays/2), 'd').valueOf()
         workforce: 50
-        userId: members(index)
+        userId: members[index]
 
     _.each _.range(fullwork + halfwork, members.length), (index)->
       Workinfos.insert
@@ -156,25 +156,26 @@ generateReceivedWorkforces = ->
 
       _.each monthRange, (month)->
 
-        start = moment({year: year, month: month, day: 1}).valueOf()
-        end = start.endOf("month").valueOf()
-
+        m = moment({year: year, month: month - 1, day: 1})
+        start = m.valueOf()
+        end = m.endOf("month").valueOf()
 
         allworks = Workinfos.find(
           projectId: project._id
           startAt:
-            $gte: start
+            $lte: end
           endAt:
-            $ltg: end
+            $gte: start
         ).fetch()
 
         totalDays = _.reduce(allworks, (memo, workinfo)->
-          from = _.max(workinfo.startAt, start)
-          to = _.min(workinfo.endAt, end)
+          from = Math.max(workinfo.startAt, start)
+          to = Math.min(workinfo.endAt, end)
           return memo + moment.duration(to - from).asDays()
         , 0)
 
-        totalMonth = Math.round(totalDays / _.random(16, 25))
+
+        totalMonth = Math.round(totalDays / _.random(25, 35))
 
         monthString = moment(start).format("YYYYMM")
 
@@ -185,6 +186,7 @@ generateReceivedWorkforces = ->
               workforce: totalMonth
 
 
+
 #if process.env.RESET_DB == 'true'
 if Meteor.users.find().count() == 0 or process.env.RESETDB=='true'
 
@@ -192,12 +194,13 @@ if Meteor.users.find().count() == 0 or process.env.RESETDB=='true'
 
   Meteor.users.remove({})
   Groups.remove({})
+  People.remove({})
   Projects.remove({})
   Workinfos.remove({})
 
-
-  generateGroups()
   generateUsers()
+  generateGroups()
+  generatePeople()
   generateProjects()
   generateWorkinfos()
   generateReceivedWorkforces()
