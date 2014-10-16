@@ -1,0 +1,12 @@
+template(name="root")
+  h1(ng-bind="config.applicationName")
+
+  div(ng-controller="rootController")
+    h4 Items
+    ul
+      li(ng-repeat="item in items")
+        span(ng-bind='item.title')
+
+
+
+

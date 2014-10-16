@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "bootstrap-3": {},
+    "jade": "0.2.6",
+    "moment": {},
+    "fast-render": {},
+    "collection2": {},
+    "autoform": {},
+    "chance": {}
+  }
+}
