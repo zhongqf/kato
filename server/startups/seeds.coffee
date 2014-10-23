@@ -48,7 +48,7 @@ generateGroups = ->
   console.log "  Generating groups ..."
 
   level = 3
-  @groupIds = [null]
+  @groupIds = [null]  # all groups in current level
 
   _(level).times ->
 
@@ -57,36 +57,42 @@ generateGroups = ->
     currentLevelGroupIds = []
 
     _.each @groupIds, (id)->
+
+      ancestorGroupId = []
+
+      if id
+        ancestorGroupId = Groups.findOne(id).ancestorGroupId
+        ancestorGroupId.push(id)
+
       _(count).times ->
         currentLevelGroupIds.push Groups.insert
           name: one.name()
           parentGroupId: id
+          ancestorGroupId: ancestorGroupId
 
-    @groupIds = _.clone(currentLevelGroupIds)
+    @groupIds = _.clone(currentLevelGroupIds) 
 
 
 generatePeople = ->
 
   console.log "  Generating people ..."
 
-  _(500).times (index)->
+  _(800).times (index)->
     name = chance.name() + " (#{index})"
 
     People.insert
-      name: "U-#{index}"
+      name: "User #{index}"
       groupId: _.sample(@groupIds)
-
-
 
 generateProjects = ->
 
   console.log "  Generating projects ..."
-  _(60).times ->
+  _(100).times ->
    
     startAt = one.pastDay()
     endAt = moment(startAt).add(_.random(20, 500), 'd').valueOf()
 
-    Projects.insert
+    projectId = Projects.insert
       name: one.name()
       startAt: startAt
       endAt: endAt
@@ -99,91 +105,108 @@ generateWorkinfos = ->
 
   projects = Projects.find({}).fetch()
 
+  findSuitablePeople = (startAt, endAt, count)->
+    days = moment.duration(endAt - startAt).asDays()
+    allPeopleId = _.map People.find({}).fetch(), (p)-> p._id
+
+    sortedPeople = _.sortBy allPeopleId, (userId)->
+      allworks = Workinfos.find(
+        userId: userId
+        startAt:
+          $lte: endAt
+        endAt:
+          $gte: startAt
+      ).fetch()
+
+      workdays = _.reduce(allworks, (memo, workinfo)->
+        from = Math.max(workinfo.startAt, startAt)
+        to = Math.min(workinfo.endAt, endAt)
+        return memo + moment.duration(to - from).asDays()
+      , 0)
+      return workdays - days
+
+    return sortedPeople.slice(0, count)
+
   _.each projects, (project)->
 
-    members = some.people(4, 20)
-
+    members = findSuitablePeople(project.startAt, project.endAt, _.random(4, 20))
     fullwork = _.random(Math.round(members.length / 4), Math.round(members.length / 2))
-    halfwork = _.random(0, Math.round(members.length / 8))
-
     projectDays = moment.duration(project.endAt - project.startAt).asDays()
+
 
     _.each _.range(0, fullwork), (index)->
       Workinfos.insert
         projectId: project._id
         startAt: project.startAt
         endAt: project.endAt
-        workforce: 100
         userId: members[index]
 
-    _.each _.range(fullwork, fullwork + halfwork), (index)->
+    _.each _.range(fullwork, members.length), (index)->
       Workinfos.insert
         projectId: project._id
         startAt: moment(project.startAt).add(_.random(1, projectDays/2), 'd').valueOf()
         endAt: moment(project.endAt).subtract(_.random(1, projectDays/2), 'd').valueOf()
-        workforce: 50
         userId: members[index]
 
-    _.each _.range(fullwork + halfwork, members.length), (index)->
-      Workinfos.insert
-        projectId: project._id
-        startAt: moment(project.startAt).add(_.random(1, projectDays/2), 'd').valueOf()
-        endAt: moment(project.endAt).subtract(_.random(1, projectDays/2), 'd').valueOf()
-        workforce: 100
-        userId: members[index]
 
 generateReceivedWorkforces = ->
 
   console.log "  Generating receivedWorkforces ..."      
+
+  eachMonth = (startAt, endAt, fn)->
+    start = moment(startAt).startOf('month')
+    endDate = moment(endAt)
+
+    currentMonth = null
+
+    while(start <= endDate)
+
+      if currentMonth != start.month()
+        fn(start)
+        currentMonth = start.month()
+
+      start = start.add(1, 'day')
+
+
   projects = Projects.find({}).fetch()
 
   _.each projects, (project)->
 
-    startYear = moment(project.startAt).year()
-    endYear = moment(project.endAt).year()
+    eachMonth project.startAt, project.endAt, (month)->
 
-    startMonth = moment(project.startAt).month()
-    endMonth = moment(project.endAt).month()
+      start = month.valueOf()
+      end = month.endOf("month").valueOf()
 
-    yearRange = _.range(startYear, endYear + 1)
+      console.log moment(start).format("YYYY-MM-DD")
 
-    _.each yearRange, (year)->
+      allworks = Workinfos.find(
+        projectId: project._id
+        startAt:
+          $lte: end
+        endAt:
+          $gte: start
+      ).fetch()
 
-      monthRangeStart = if year == startYear then startMonth else 1
-      monthRangeEnd = if year == endYear then endMonth + 1 else 13
+      console.log allworks.length
 
-      monthRange = _.range(monthRangeStart, monthRangeEnd)
+      totalDays = _.reduce(allworks, (memo, workinfo)->
+        from = Math.max(workinfo.startAt, start)
+        to = Math.min(workinfo.endAt, end)
+        return memo + moment.duration(to - from).asDays()
+      , 0)
 
-      _.each monthRange, (month)->
-
-        m = moment({year: year, month: month - 1, day: 1})
-        start = m.valueOf()
-        end = m.endOf("month").valueOf()
-
-        allworks = Workinfos.find(
-          projectId: project._id
-          startAt:
-            $lte: end
-          endAt:
-            $gte: start
-        ).fetch()
-
-        totalDays = _.reduce(allworks, (memo, workinfo)->
-          from = Math.max(workinfo.startAt, start)
-          to = Math.min(workinfo.endAt, end)
-          return memo + moment.duration(to - from).asDays()
-        , 0)
+      console.log totalDays
 
 
-        totalMonth = Math.round(totalDays / _.random(25, 35))
+      totalWorkforce = Math.round(totalDays / _.random(25, 35))
 
-        monthString = moment(start).format("YYYYMM")
+      monthString = moment(start).format("YYYYMM")
 
-        Projects.update project._id, 
-          $push:
-            receivedWorkforces:
-              month: monthString
-              workforce: totalMonth
+      Projects.update project._id, 
+        $push:
+          receivedWorkforces:
+            month: monthString
+            workforce: totalWorkforce
 
 
 

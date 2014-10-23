@@ -1,5 +1,5 @@
 template(name="root")
-  div.container
+  div.container-fluid
     .row
       .col-md-3(ng-controller="rootGroupController")
         h1 Groups
@@ -9,7 +9,7 @@ template(name="root")
         h1(ng-bind="group.name")
 
         div(ng-repeat="project in projects", ng-controller="projectController")
-          h4(ng-bind="project.name")
+          h4(ng-bind="project.name", data-id="[[project._id]]")
 
           table.table.table-bordered
             tr
@@ -27,6 +27,6 @@ template(name="root")
 template(name="groupList")
   ul
     li(ng-repeat="group in childGroups", ng-controller="childGroupController")
-      a(href="", ng-bind="group.name", ng-click="switchGroup(group)")
+      a(href="", ng-bind="group.name", ng-click="switchGroup(group)", data-id="[[group._id]]")
       div(ng-include="'groupList'", ng-if="childGroups")
 
