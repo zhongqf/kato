@@ -19,4 +19,8 @@ theApp
       .state 'root',
         url: '/'
         templateUrl: 'root'
+
+      .state 'rework',
+        url: '/rework'
+        templateUrl: 'rework'
   ]

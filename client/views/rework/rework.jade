@@ -1,0 +1,56 @@
+template(name="rework")
+  .app-header.navbar(data-ng-include=' "blocks_header" ')
+  .app-aside.hidden-xs(data-ng-include=' "blocks_aside" ')
+  .app-content
+    div(ui-butterbar='')
+    a.off-screen-toggle.hide(href='', ui-toggle-class='off-screen', data-target='.app-aside')
+    .app-content-body.fade-in-up(ui-view='')
+  .app-aside-right.pos-fix.no-padder.w-md.w-auto-xs.bg-white.b-l.animated.fadeInRight.hide
+    .vbox
+      .wrapper.b-b.b-t.b-light.m-b
+        a.pull-right.text-muted.text-md(href='', ui-toggle-class='show', target='.app-aside-right')
+          i.icon-close
+        | Chat
+      .row-row
+        .cell
+          .cell-inner.padder
+            .m-b
+              a.pull-left.thumb-xs.avatar(href='')
+                img(src='img/a2.jpg', alt='...')
+              .clear
+                .pos-rlt.wrapper-sm.b.b-light.r.m-l-sm
+                  span.arrow.left.pull-up
+                  p.m-b-none Hi John, What's up...
+                small.text-muted.m-l-sm
+                  i.fa.fa-ok.text-success
+                  | 2 minutes ago
+            .m-b
+              a.pull-right.thumb-xs.avatar(href='')
+                img.img-circle(src='img/a3.jpg', alt='...')
+              .clear
+                .pos-rlt.wrapper-sm.bg-light.r.m-r-sm
+                  span.arrow.right.pull-up.arrow-light
+                  p.m-b-none Lorem ipsum dolor :)
+                small.text-muted 1 minutes ago
+            .m-b
+              a.pull-left.thumb-xs.avatar(href='')
+                img(src='img/a2.jpg', alt='...')
+              .clear
+                .pos-rlt.wrapper-sm.b.b-light.r.m-l-sm
+                  span.arrow.left.pull-up
+                  p.m-b-none Great!
+                small.text-muted.m-l-sm
+                  i.fa.fa-ok.text-success
+                  | Just Now
+      .wrapper.m-t.b-t.b-light
+        form.m-b-none
+          .input-group
+            input.form-control(type='text', placeholder='Say something')
+            span.input-group-btn
+              button.btn.btn-default(type='button') SEND
+  .app-footer.wrapper.b-t.bg-light
+    span.pull-right
+      | {{app.version}}
+      a.m-l-sm.text-muted(href='', ui-scroll='app')
+        i.fa.fa-long-arrow-up
+    | © 2014 Copyright.
