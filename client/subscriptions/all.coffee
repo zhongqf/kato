@@ -1,5 +1,5 @@
-theApp.bindSubscriptions =  ->
-  theApp.allSubscriptions = [
+bindSubscriptions =  ->
+  allSubscriptions = [
     Meteor.subscribe("users")
     Meteor.subscribe("groups")
     Meteor.subscribe("people")
@@ -7,4 +7,4 @@ theApp.bindSubscriptions =  ->
     Meteor.subscribe("workinfos")
   ]
 
-theApp.bindSubscriptions()
+bindSubscriptions()

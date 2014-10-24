@@ -17,7 +17,8 @@ var app = angular.module('app', [
     'app.filters',
     'app.services',
     'app.directives',
-    'app.controllers'
+    'app.controllers',
+    'meteorApp'
   ])
 .run(
   [          '$rootScope', '$state', '$stateParams',
@@ -46,8 +47,12 @@ var app = angular.module('app', [
             .state('app', {
                 abstract: true,
                 url: '/app',
-                templateUrl: 'tpl/app.html'
+                templateUrl: 'app'
             })
+            .state('app.rework', {
+                url: '/rework',
+                templateUrl: 'rework'
+            })/*
             .state('app.dashboard-v1', {
                 url: '/dashboard-v1',
                 templateUrl: 'tpl/app_dashboard_v1.html'
@@ -407,7 +412,8 @@ var app = angular.module('app', [
                         );
                     }]
                 }
-            })
+            })*/
+
     }
   ]
 )
