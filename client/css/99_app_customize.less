@@ -31,3 +31,21 @@ body {
   font-weight: 400;
   font-size: 14px
 }
+
+
+.nav-tabs-alt .nav-tabs > li.active {
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 3px;
+    //color: @brand-info;
+    background-color: #23b7e5 !important;
+  }
+
+  & > a {
+    font-weight: 600;
+  }
+}
