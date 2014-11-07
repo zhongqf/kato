@@ -3,16 +3,14 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-standard-app-packages
 insecure
 less
 coffeescript
 accounts-ui
 accounts-password
-bootstrap-3
-jade
-moment
-fast-render
-collection2
-autoform
-chance
+meteor-platform
+mizzao:bootstrap-3
+mquandalle:jade
+mrt:chance
+mrt:moment
+
