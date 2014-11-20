@@ -12,7 +12,7 @@ angular.module('app.controllers', ['pascalprecht.translate', 'ngCookies'])
 
       // config
       $scope.app = {
-        name: 'Angulr',
+        name: 'Kato',
         version: '1.3.1',
         // for chart colors
         color: {

@@ -27,7 +27,8 @@
 }
 
 body {
-  font-family: Proxima-Nova, Helvetica, Arial, sans-serif;
+  //font-family: Proxima-Nova, Helvetica, Arial, sans-serif;
+  font-family: 'Microsoft Yahei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 14px
 }
@@ -48,4 +49,60 @@ body {
   & > a {
     font-weight: 600;
   }
+}
+
+
+.app-aside-fixed.app-aside-with-app {
+  .app-aside, .navbar-header, .aside-wrap {
+    width: 260px;
+  }
+  .navbar-collapse, .app-content, .app-footer {
+    margin-left: 260px;
+  }
+  .aside-wrap .app-wrap {
+    position: fixed;
+    left: 0;
+    top: 50px;
+    width: 60px;
+    bottom: 0px;
+    overflow: hidden;
+
+    .navi>ul>li>a {
+      position: relative;
+      height: 50px;
+      padding: 0;
+      text-align: center;
+      border: 0;
+
+      i {
+        display: block;
+        float: none;
+        width: auto;
+        margin: 0;
+        font-size: 16px;
+        line-height: 50px;
+        border: none!important;
+      }
+
+      span {
+        display: none;
+      }
+
+      .badge, .label {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        z-index: 3;
+      }
+
+    }
+  }
+  .aside-wrap .navi-wrap {
+    margin-left: 60px;
+  }
+}
+
+.main-navi .line {
+  margin-top: 0;
+  margin-bottom: 0;
 }

@@ -1,4 +1,4 @@
-<template name="rework">
+<template name="pages_employees">
 <!-- hbox layout -->
 <div class="hbox hbox-auto-xs" ng-init="
   app.settings.asideFolded = false; 
@@ -12,15 +12,50 @@
     <div class="vbox">
       <div class="nav-tabs-alt bg-light lter">
         <ul class="nav nav-tabs">
-          <li ng-class="{'active': tabs[0]}">
-            <a href ng-click="tab(0)">Day</a>
+          <li ng-class="{'active': tabs[0]}" class="dropdown">
+            <a href class="dropdown-toggle" data-toggle="dropdown">
+              基本
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href ng-click="tab(0)">item 1 </a></li>
+              <li><a href ng-click="tab(1)">item 2 </a></li>
+              <li><a href ng-click="tab(2)">item 3 </a></li>
+            </ul>
           </li>
-          <li ng-class="{'active': tabs[1]}">
-            <a href ng-click="tab(1)">Month</a>
+          <li ng-class="{'active': tabs[1]}" class="dropdown">
+            <a href class="dropdown-toggle" data-toggle="dropdown">
+              项目经历
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href ng-click="tab(0)">item 1 </a></li>
+              <li><a href ng-click="tab(1)">item 2 </a></li>
+              <li><a href ng-click="tab(2)">item 3 </a></li>
+            </ul>
           </li>
           <li ng-class="{'active': tabs[2]}">
-            <a href ng-click="tab(2)">Year</a>
+            <a href ng-click="tab(2)">成长记录</a>
           </li>
+
+          <li class="dropdown pull-right">
+            <a href class="dropdown-toggle" data-toggle="dropdown">
+              操作
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href>item 1 </a></li>
+              <li><a href>item 2 </a></li>
+              <li><a href>item 3 </a></li>
+            </ul>
+          </li>
+          <li class="pull-right">
+            <a href>
+              <i class="icon-refresh"></i>
+              刷新
+            </a>
+          </li>
+
         </ul>
       </div>
       <div class="row-row">
@@ -29,9 +64,9 @@
             <div class="tab-content">
               <div class="tab-pane" ng-class="{'active': tabs[0]}">
                 <div class="wrapper">
-                  This is the scrollable content, hover to show the scrollbar
+                  这里是可滚动区域，当鼠标悬停时显示滚动条
                   <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-                  You got the bottom
+                  已经到达了页面最底部
                 </div>
               </div>
               <div class="tab-pane" ng-class="{'active': tabs[1]}">

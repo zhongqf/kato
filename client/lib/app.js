@@ -49,10 +49,19 @@ var app = angular.module('app', [
                 url: '/app',
                 templateUrl: 'app'
             })
-            .state('app.rework', {
-                url: '/rework',
-                templateUrl: 'rework'
-            })/*
+            .state('app.kato', {
+                url: '/kato',
+                templateUrl: 'pages_kato'
+            })
+            .state('app.employees', {
+                url: '/employees',
+                templateUrl: "pages_employees"
+            })
+            .state('app.projects', {
+                url: '/projects',
+                templateUrl: "pages_projects"
+            })
+            /*
             .state('app.dashboard-v1', {
                 url: '/dashboard-v1',
                 templateUrl: 'tpl/app_dashboard_v1.html'
