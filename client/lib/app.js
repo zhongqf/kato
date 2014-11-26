@@ -42,7 +42,9 @@ var app = angular.module('app', [
         app.value      = $provide.value;
 
         $urlRouterProvider
-            .otherwise('/app/dashboard-v1');
+            .otherwise('/app/dashboard-v1')
+            .when('/app/employees', '/app/employees/');
+            
         $stateProvider
             .state('app', {
                 abstract: true,
@@ -55,7 +57,45 @@ var app = angular.module('app', [
             })
             .state('app.employees', {
                 url: '/employees',
-                templateUrl: "pages_employees"
+                abstract: true,
+                views: {
+                    'page_header@app': {
+                        templateUrl: 'pages_employees_header'
+                    },
+                    'page_tabs@app': {
+                        templateUrl: 'pages_employees_tabs'
+                    }
+                }
+            })
+            .state('app.employees.home', {
+                url: '/',
+                views: {
+                    '@app': {
+                        templateUrl: 'pages_employees'
+                    }
+                }
+            })
+            .state('app.employees.misc', {
+               url: '/misc',
+               views: {
+                    '@app': {
+                        templateUrl: 'pages_employees_misc'
+                    }
+               }
+            })
+            .state('app.employees.single', {
+                url: '/single',
+                views : {
+                    'page_header@app': {
+                        templateUrl: 'pages_employees_single_header'
+                    },
+                    'page_tabs@app': {
+                        templateUrl: 'pages_employees_single_tabs'
+                    },
+                    '@app': {
+                        templateUrl: 'pages_employees_single'
+                    }
+                }
             })
             .state('app.projects', {
                 url: '/projects',

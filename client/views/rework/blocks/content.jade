@@ -1,0 +1,10 @@
+template(name="blocks_content")
+  .hbox.hbox-auto-xs
+    .col
+      .vbox
+        .nav-tabs-alt.bg-light.lter(ui-view='page_tabs')
+        .row-row
+          .cell.hover(ui-jq="slimScroll" ui-options="{height: '100%'; size: '6px'}")
+            .cell-inner(ui-view='')
+
+

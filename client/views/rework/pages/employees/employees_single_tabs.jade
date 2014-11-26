@@ -1,0 +1,32 @@
+template(name="pages_employees_single_tabs")
+  ul.nav.nav-tabs
+    li.active.dropdown
+      a.dropdown-toggle(data-toggle="dropdown")
+        | 基本情报
+        span.caret
+      ul.dropdown-menu(role="menu")
+        li: a Item 1
+        li: a Item 2
+        li: a Item 3
+    li.dropdown
+      a.dropdown-toggle(data-toggle="dropdown")
+        | 案件履历
+        span.caret
+      ul.dropdown-menu(role="menu")
+        li: a Item 1
+        li: a Item 2
+        li: a Item 3
+    li
+      a 成长记录
+    li.dropdown.pull-right
+      a.dropdown-toggle(data-toggle="dropdown")
+        | 操作
+        span.caret
+      ul.dropdown-menu(role="menu")
+        li: a Item 1
+        li: a Item 2
+        li: a Item 3
+    li.pull-right
+      a
+        i.icon-refresh
+        | 刷新
