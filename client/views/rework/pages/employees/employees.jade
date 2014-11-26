@@ -1,5 +1,18 @@
 template(name="pages_employees")
   .wrapper
-    p This is the employees content
-    a(ui-sref="app.employees.single") Aさん
-
+    .panel.panel-default
+      .table-responsive
+        table.table.table-striped.m-b-none(
+          ui-jq="dataTable"
+          ui-options="data_options"
+          ng-controller="GridController"
+        )
+          thead
+            tr
+              th(style="width: 10%") 工号
+              th(style="width: 15%") 姓名
+              th(style="width: 10%") 职级 
+              th(style="width: 15%") 所属组
+              th(style="width: 20%") 所在项目
+              th(style="width: 15%") CSS grade
+          tbody
