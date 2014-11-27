@@ -1,13 +1,35 @@
-katoApp.controllers.controller('GridController',['$scope','meteor', ($scope, meteor)->
+katoApp.controllers.controller('GridController',['$scope','meteor','uiGridConstants', ($scope, meteor, uiGridConstants)->
 
-  $scope.griddata = [
-    ['HX0677','仲秦锋','PG-2','开发G','会计维持管理','12'],
-    ['HX1234','关羽','PM-1','AMO','无印良品','23']
-  ]
+  meteor.autorun $scope, ->
 
-  $scope.data_options = 
-    data: $scope.griddata
-    language:
-      url:'/l10n/dt_chinese.json'
+    $scope.gridOptions =
+      enableFiltering: true
+      columnDefs: [
+          name: '_id'
+          displayName: '工号'
+          field: '_id'
+          cellTemplate: "<div class='ui-grid-cell-contents'><a ui-sref='app.employees.single'>[[COL_FIELD]]</a></div>"
+          enableColumnMenu: false
+          width: '15%'
+          filter:
+            condition: uiGridConstants.filter.CONTAINS
+        ,
+          name: 'name'
+          displayName: '姓名'
+          field: 'name'
+          enableColumnMenu: false
+          width: '15%'
+          filter:
+            condition: uiGridConstants.filter.CONTAINS
+        ,
+          name: 'groupId'
+          displayName: '所属组'
+          field: 'groupId'
+          enableColumnMenu: false
+          filter:
+            condition: uiGridConstants.filter.CONTAINS
+      ]
+
+      data: People.find().fetch()
 
 ])

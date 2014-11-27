@@ -10,6 +10,7 @@ global = exports ? this
   'ui.bootstrap',
   'ui.load',
   'ui.jq',
+  'ui.grid',
   'ui.validate',
   'oc.lazyLoad',
   'pascalprecht.translate',
