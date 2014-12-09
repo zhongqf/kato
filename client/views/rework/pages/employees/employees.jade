@@ -3,4 +3,8 @@ template(name="pages_employees")
     .panel.panel-default
       .table-responsive
         div(ng-controller="GridController")
-          .peopleGrid(ui-grid="gridOptions")
+          table.table.ng-table-responsive(ng-table="tableParams")
+            tr(ng-repeat="person in $data")
+              td(data-title="'ID'"): a(ui-sref="app.employees.single" ng-bind="person._id")
+              td(data-title="'Name'" ng-bind="person.name")
+              td(data-title="'Group ID'" ng-bind="person.groupId")

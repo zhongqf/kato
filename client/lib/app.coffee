@@ -10,7 +10,6 @@ global = exports ? this
   'ui.bootstrap',
   'ui.load',
   'ui.jq',
-  'ui.grid',
   'ui.validate',
   'oc.lazyLoad',
   'pascalprecht.translate',
@@ -20,7 +19,8 @@ global = exports ? this
   'app.directives',
   'app.controllers',
   'app.services',
-  'meteorApp'
+  'meteorApp',
+  'ngTable'
 ])
 
 

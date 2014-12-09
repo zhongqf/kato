@@ -177,8 +177,6 @@ generateReceivedWorkforces = ->
       start = month.valueOf()
       end = month.endOf("month").valueOf()
 
-      console.log moment(start).format("YYYY-MM-DD")
-
       allworks = Workinfos.find(
         projectId: project._id
         startAt:
@@ -187,15 +185,11 @@ generateReceivedWorkforces = ->
           $gte: start
       ).fetch()
 
-      console.log allworks.length
-
       totalDays = _.reduce(allworks, (memo, workinfo)->
         from = Math.max(workinfo.startAt, start)
         to = Math.min(workinfo.endAt, end)
         return memo + moment.duration(to - from).asDays()
       , 0)
-
-      console.log totalDays
 
 
       totalWorkforce = Math.round(totalDays / _.random(25, 35))

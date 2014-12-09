@@ -1,35 +1,18 @@
-katoApp.controllers.controller('GridController',['$scope','meteor','uiGridConstants', ($scope, meteor, uiGridConstants)->
+katoApp.controllers.controller('GridController',['$scope','meteor','ngTableParams', ($scope, meteor, ngTableParams)->
 
+  data = []
+
+  $scope.tableParams = new ngTableParams
+      page: 1
+      count: 10
+    ,
+      total: data.length
+      getData: ($defer, params)->
+        sliced_data = data.slice((params.page() - 1) *  params.count(), params.page() * params.count())
+        $defer.resolve( sliced_data )
+ 
   meteor.autorun $scope, ->
-
-    $scope.gridOptions =
-      enableFiltering: true
-      columnDefs: [
-          name: '_id'
-          displayName: '工号'
-          field: '_id'
-          cellTemplate: "<div class='ui-grid-cell-contents'><a ui-sref='app.employees.single'>[[COL_FIELD]]</a></div>"
-          enableColumnMenu: false
-          width: '15%'
-          filter:
-            condition: uiGridConstants.filter.CONTAINS
-        ,
-          name: 'name'
-          displayName: '姓名'
-          field: 'name'
-          enableColumnMenu: false
-          width: '15%'
-          filter:
-            condition: uiGridConstants.filter.CONTAINS
-        ,
-          name: 'groupId'
-          displayName: '所属组'
-          field: 'groupId'
-          enableColumnMenu: false
-          filter:
-            condition: uiGridConstants.filter.CONTAINS
-      ]
-
-      data: People.find().fetch()
+    data = People.find().fetch()
+    $scope.tableParams.reload()
 
 ])
