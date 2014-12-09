@@ -3,8 +3,18 @@ template(name="pages_employees")
     .panel.panel-default
       .table-responsive
         div(ng-controller="GridController")
-          table.table.ng-table-responsive(ng-table="tableParams")
-            tr(ng-repeat="person in $data")
-              td(data-title="'ID'"): a(ui-sref="app.employees.single" ng-bind="person._id")
-              td(data-title="'Name'" ng-bind="person.name")
-              td(data-title="'Group ID'" ng-bind="person.groupId")
+          table.table(st-table="personCollection" st-safe-src="rowCollection")
+            thead
+              tr
+                th(st-sort='_id') ID
+                th(st-sort='name') Name
+                th(st-sort='groupId') Group ID
+            tbody
+              tr(ng-repeat="person in personCollection")
+                td: a(ui-sref="app.employees.single" ng-bind="person._id")
+                td(ng-bind="person.name")
+                td(ng-bind="person.groupId")
+            tfoot
+              tr
+                td.text-center(colspan="3")
+                  div(st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7")

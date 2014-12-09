@@ -1,18 +1,11 @@
-katoApp.controllers.controller('GridController',['$scope','meteor','ngTableParams', ($scope, meteor, ngTableParams)->
+katoApp.controllers.controller('GridController',['$scope','meteor', ($scope, meteor)->
 
-  data = []
+  $scope.itemsByPage = 15
+  $scope.rowCollection = []
 
-  $scope.tableParams = new ngTableParams
-      page: 1
-      count: 10
-    ,
-      total: data.length
-      getData: ($defer, params)->
-        sliced_data = data.slice((params.page() - 1) *  params.count(), params.page() * params.count())
-        $defer.resolve( sliced_data )
- 
+  $scope.personCollection = [].concat($scope.rowCollection);
+
   meteor.autorun $scope, ->
-    data = People.find().fetch()
-    $scope.tableParams.reload()
+    $scope.rowCollection = People.find().fetch()
 
 ])

@@ -20,7 +20,7 @@ global = exports ? this
   'app.controllers',
   'app.services',
   'meteorApp',
-  'ngTable'
+  'smart-table'
 ])
 
 
