@@ -6,14 +6,18 @@ template(name="pages_employees")
           table.table(st-table="personCollection" st-safe-src="rowCollection")
             thead
               tr
-                th(st-sort='_id') ID
-                th(st-sort='name') Name
-                th(st-sort='groupId') Group ID
+                th(st-sort='_id') 工号
+                th(st-sort='name') 姓名
+                th(st-sort='groupId') 职级
+                th 所属组
+                th 所在项目
             tbody
               tr(ng-repeat="person in personCollection")
                 td: a(ui-sref="app.employees.single" ng-bind="person._id")
                 td(ng-bind="person.name")
                 td(ng-bind="person.groupId")
+                td
+                td
             tfoot
               tr
                 td.text-center(colspan="3")
